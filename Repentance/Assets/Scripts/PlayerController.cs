@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput.x * walkSpeed, rb.linearVelocity.y);
         }
 
-    public void OnMoves(InputAction.CallbackContext context)
+    public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
         IsMoving = moveInput != Vector2.zero;
