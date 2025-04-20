@@ -66,7 +66,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\FadeRemove.cs" />
+    <Compile Include="Assets\Scripts\TouchingDirections.cs" />
+    <Compile Include="Assets\Scripts\Damageable.cs" />
+    <Compile Include="Assets\Attack.cs" />
+    <Compile Include="Assets\Scripts\Knight.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\SettBoolBehaviour.cs" />
     <Compile Include="Assets\Scripts\AnimationStrings.cs" />
+    <Compile Include="Assets\Scripts\DetectionZone.cs" />
     <Compile Include="Assets\Scripts\ParalaxEffect.cs" />
   </ItemGroup>
   <ItemGroup>

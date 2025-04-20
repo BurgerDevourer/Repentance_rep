@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 407482924938997305}
   - component: {fileID: 5022064967571781990}
   - component: {fileID: 6513985119848852358}
-  m_Layer: 0
+  - component: {fileID: 9088153580650299294}
+  - component: {fileID: 2906548739749615636}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +82,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -7625406061393645561, guid: eae9d68c2d0e344478ebb59f6a4f8f10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -133,6 +135,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   runSpeed: 8
+  airWalkSpeed: 5
+  jumpImpulse: 10
+  fallMultiplier: 2.5
   _isMoving: 0
   _isRunning: 0
   _isFacingRight: 1
@@ -182,7 +187,19 @@ MonoBehaviour:
     m_ActionId: 4df13a0b-10cd-4d0e-b026-7b086b564b74
     m_ActionName: 'Player/Look[/Mouse/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2919624758265838501}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c41a1d65-5443-48a0-bf8f-f1e8125d5bff
     m_ActionName: 'Player/Attack[/Mouse/leftButton]'
   - m_PersistentCalls:
@@ -241,6 +258,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 8fab8e9b-9e6a-4c31-9c23-e85d3322aee4
     m_ActionName: 'Player/Run[/Keyboard/leftShift]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2919624758265838501}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f1c8b6ec-092c-4006-b069-427af2880027
+    m_ActionName: 'Player/Jump[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -305,3 +338,51 @@ CapsuleCollider2D:
   m_Offset: {x: 0.05, y: -0.3}
   m_Size: {x: 0.8, y: 1.1}
   m_Direction: 0
+--- !u!114 &9088153580650299294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322328632076831233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33de19bb9576b34488666954ad4821a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castFilter:
+    useTriggers: 0
+    useLayerMask: 1
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 0
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 0
+    maxNormalAngle: 0
+  groundDistance: 0.05
+  wallDistance: 0.2
+  ceilingDistance: 0.05
+  rightWallCheckDirection: {x: 1, y: 0}
+  leftWallCheckDirection: {x: -1, y: 0}
+  _isGrounded: 0
+  _isOnWall: 0
+  _isOnRightWall: 0
+  _isOnLeftWall: 0
+  _isOnCeiling: 0
+--- !u!114 &2906548739749615636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2322328632076831233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de66766b0a2eb1c40b1603b98e74e170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
