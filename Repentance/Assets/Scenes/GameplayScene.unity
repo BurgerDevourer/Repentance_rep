@@ -656,7 +656,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.9, y: -2.1, z: -10}
+  m_LocalPosition: {x: -4.4, y: 3.0549858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1176,7 +1176,7 @@ Transform:
   m_GameObject: {fileID: 1898448054}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9, y: -2.1, z: -10}
+  m_LocalPosition: {x: -4.4, y: 3.0549858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1978,7 +1978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 407482924938997305, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
       propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnRun
+      value: OnDash
       objectReference: {fileID: 0}
     - target: {fileID: 407482924938997305, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
       propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -2020,6 +2020,10 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2919624758265838501, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
+      propertyPath: dashDuration
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6252928943012215320, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
       propertyPath: m_Mass
       value: 5
@@ -2038,11 +2042,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8337833010787816389, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.9
+      value: -4.4
       objectReference: {fileID: 0}
     - target: {fileID: 8337833010787816389, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.1
+      value: 3.0549858
       objectReference: {fileID: 0}
     - target: {fileID: 8337833010787816389, guid: 0c8b1ba8f327fb74188d2aef0017efcf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2103,7 +2107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1666764422679897233, guid: d143f6a4cd78558498583378f612f030, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.6409751
+      value: -1.640983
       objectReference: {fileID: 0}
     - target: {fileID: 1666764422679897233, guid: d143f6a4cd78558498583378f612f030, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2144,6 +2148,10 @@ PrefabInstance:
     - target: {fileID: 4836196273977457316, guid: d143f6a4cd78558498583378f612f030, type: 3}
       propertyPath: walkStopRate
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029357461814100029, guid: d143f6a4cd78558498583378f612f030, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7269329383182624943, guid: d143f6a4cd78558498583378f612f030, type: 3}
       propertyPath: m_Name
