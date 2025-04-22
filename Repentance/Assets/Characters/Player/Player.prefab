@@ -134,12 +134,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 5
-  runSpeed: 8
+  dashPower: 10
+  dashDuration: 0.2
+  dashCooldown: 0.8
   airWalkSpeed: 5
   jumpImpulse: 10
   fallMultiplier: 2.5
   _isMoving: 0
-  _isRunning: 0
+  _isDashing: 0
   _isFacingRight: 1
 --- !u!114 &407482924938997305
 MonoBehaviour:
@@ -246,7 +248,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2919624758265838501}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnRun
+        m_MethodName: OnDash
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

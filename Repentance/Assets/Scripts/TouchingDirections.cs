@@ -75,12 +75,25 @@ public class TouchingDirections : MonoBehaviour
         // Check if grounded
         IsGrounded = touchingCol.Cast(Vector2.down, castFilter, groundHits, groundDistance) > 0;
 
-        // Check walls separately for right and left
+        // Check walls separately for right and left - using more precise detection
         _isOnRightWall = touchingCol.Cast(rightWallCheckDirection, castFilter, rightWallHits, wallDistance) > 0;
         _isOnLeftWall = touchingCol.Cast(leftWallCheckDirection, castFilter, leftWallHits, wallDistance) > 0;
         
         // Set overall wall state
+        bool wasOnWall = _isOnWall;
         _isOnWall = _isOnRightWall || _isOnLeftWall;
+        
+        // Extra check - if player is pushing into wall, make sure we detect it
+        if (_isOnWall && rb.linearVelocity.x != 0)
+        {
+            // If velocity is pushing into wall, ensure the wall state is correctly set
+            if ((rb.linearVelocity.x > 0 && _isOnRightWall) || 
+                (rb.linearVelocity.x < 0 && _isOnLeftWall))
+            {
+                _isOnWall = true;
+            }
+        }
+        
         animator.SetBool(AnimationStrings.isOnWall, _isOnWall);
 
         // Check if on ceiling
