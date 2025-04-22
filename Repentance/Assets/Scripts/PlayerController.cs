@@ -118,6 +118,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         touchingDirections = GetComponent<TouchingDirections>();
+
+        animator.SetBool(AnimationStrings.canMove, true);
     }
 
     private void FixedUpdate()
@@ -149,6 +151,8 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.linearVelocity.y);
         animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
     }
+
+    
 
     public void OnMove(InputAction.CallbackContext context)
     {

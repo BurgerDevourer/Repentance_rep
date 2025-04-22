@@ -1,17 +1,18 @@
 using UnityEngine;
 
-internal static class AnimationStrings
+public static class AnimationStrings
 {
-    // Movement-related animation parameters
-    public const string IsMoving = "isMoving";
-    public const string IsRunning = "isRunning";
-    public const string IsGrounded = "isGrounded";
-    public const string yVelocity = "yVelocity";
-    public const string jump = "jump";
-    public const string isOnWall = "isOnWall";
-    public const string isOnCeiling = "isOnCeiling";
-    public const string attack = "attack";
-    public const string canMove = "canMove";
-    public const string hasTarget = "hasTarget";
-    public const string isAlive = "isAlive";
+    public static string IsMoving = "IsMoving";
+    public static string IsRunning = "IsRunning";
+    public static string jump = "jump";
+    public static string attack = "attack";
+    public static string canMove = "canMove";
+    public static string isAlive = "isAlive";
+    public static string yVelocity = "yVelocity";
+    
+    // Make sure these exist:
+    public static string IsGrounded = "IsGrounded";
+    public static string isOnWall = "isOnWall";  
+    public static string isOnCeiling = "isOnCeiling";
+    public static string hasTarget = "hasTarget";
 }

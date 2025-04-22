@@ -168,9 +168,9 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2919624758265838501}
+      - m_Target: {fileID: 2322328632076831233}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnMove
+        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -386,3 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de66766b0a2eb1c40b1603b98e74e170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHealth: 0
+  _health: 100
+  _isAlive: 1
+  invincibilityTime: 0.25
