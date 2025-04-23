@@ -432,6 +432,23 @@ public class PlayerController : MonoBehaviour
             // Start a coroutine to ensure we can move again after animation
             StartCoroutine(ResetCanMoveAfterDelay(0.5f)); // Adjust time to match your animation length
         }
+        
+        if (context.started)
+        {
+            // Add debugging here
+            Debug.Log($"Jump attempted - IsGrounded: {touchingDirections.IsGrounded}, CanMove: {CanMove}");
+            
+            if (touchingDirections.IsGrounded && CanMove)
+            {
+                // Normal jump
+                animator.SetTrigger(AnimationStrings.jump);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpImpulse);
+            }
+            else if (touchingDirections.IsOnWall)
+            {
+                // Wall jump logic...
+            }
+        }
     }
 
     private IEnumerator ResetCanMoveAfterDelay(float delay)

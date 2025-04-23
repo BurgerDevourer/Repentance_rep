@@ -83,7 +83,7 @@ public class Damageable : MonoBehaviour
             Health -= damage;
             isInvincible = true;
 
-            animator.SetTrigger(AnimationStrings.hurt);
+            animator.SetTrigger(AnimationStrings.isHurt);
         }
     }
 

@@ -114,10 +114,10 @@ GameObject:
   - component: {fileID: 3519469640638693848}
   - component: {fileID: 2616996406717830811}
   - component: {fileID: 6772026689195176006}
-  - component: {fileID: 4836196273977457316}
   - component: {fileID: 460333197869064834}
   - component: {fileID: 6849594495726780551}
   - component: {fileID: 3783552703611880661}
+  - component: {fileID: 4205912043772671655}
   m_Layer: 8
   m_Name: KnightEnemy
   m_TagString: Untagged
@@ -261,26 +261,6 @@ CapsuleCollider2D:
   m_Offset: {x: -0.100000024, y: -0.15}
   m_Size: {x: 1.2, y: 2.4}
   m_Direction: 0
---- !u!114 &4836196273977457316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7269329383182624943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8780b8984d63944b9f9ac20abdbd19d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 3
-  walkStopRate: 0.05
-  attackZone: {fileID: 7133881785189091924}
-  ledgeCheckDistance: 0.5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _hasTarget: 0
 --- !u!114 &460333197869064834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +335,26 @@ MonoBehaviour:
   _health: 100
   _isAlive: 1
   invincibilityTime: 0.25
+--- !u!114 &4205912043772671655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7269329383182624943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8780b8984d63944b9f9ac20abdbd19d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 3
+  walkStopRate: 0.05
+  attackZone: {fileID: 0}
+  ledgeCheckDistance: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _hasTarget: 0
 --- !u!1 &8721924295921636551
 GameObject:
   m_ObjectHideFlags: 0

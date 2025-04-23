@@ -4,7 +4,6 @@ public static class AnimationStrings
 {
     // Movement-related animation parameters
     public const string IsMoving = "isMoving";
-    public const string IsRunning = "isRunning"; // Keep for backward compatibility
     public const string IsDashing = "isDashing"; // Add new parameter
     public const string IsGrounded = "isGrounded";
     public const string yVelocity = "yVelocity";
