@@ -15,4 +15,5 @@ public static class AnimationStrings
     public const string canMove = "canMove";
     public const string hasTarget = "hasTarget";
     public const string isAlive = "isAlive";
+    public const string isHurt = "isHurt";
 }

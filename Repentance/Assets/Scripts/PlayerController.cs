@@ -27,8 +27,10 @@ public class PlayerController : MonoBehaviour
         {
             if (CanMove)
             {
-                if (IsMoving && !touchingDirections.IsOnWall)
+                if (IsMoving)
                 {
+                    // Removed the !touchingDirections.IsOnWall check here
+                    // since we handle wall collisions separately now
                     if (touchingDirections.IsGrounded)
                     {
                         return walkSpeed;
@@ -124,8 +126,18 @@ public class PlayerController : MonoBehaviour
         bool isGrounded = touchingDirections.IsGrounded;
         if (isGrounded && !wasGrounded)
         {
-            // Just landed - ensure we can move
+            // Just landed - ensure we can move immediately
             animator.SetBool(AnimationStrings.canMove, true);
+            
+            // Important: Ensure moveInput isn't zero'd out when landing
+            if (moveInput != Vector2.zero)
+            {
+                // Reset any lingering IsOnWall states to prevent sticking issues
+                SetFacingDirection(moveInput);
+            }
+            
+            // Add a small vertical bounce to prevent sticking to ground
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0.1f);
         }
         wasGrounded = isGrounded;
         
@@ -153,9 +165,57 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (isGrounded && !wasGrounded)
+        {
+            // Just landed - ensure we can move
+            animator.SetBool(AnimationStrings.canMove, true);
+            
+            // Start the unstick helper
+            StartCoroutine(EnsureMovementAfterLanding());
+        }
+
         // Normal movement code - only executes if we're not stuck on a wall
         rb.linearVelocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.linearVelocity.y);
         animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
+    }
+
+    // Add this update method to detect wall sticking
+    private void Update()
+    {
+        // If we're stuck to a wall and can't move, try to fix it
+        if (touchingDirections.IsOnWall && !CanMove && !isDashing)
+        {
+            // Emergency unsticking - force canMove to true
+            animator.SetBool(AnimationStrings.canMove, true);
+        }
+        
+        // Add ground sticking check
+        if (touchingDirections.IsGrounded && !CanMove && !isDashing)
+        {
+            // If grounded and can't move, must be stuck - force canMove
+            animator.SetBool(AnimationStrings.canMove, true);
+            
+            // Also help unstick from ground
+            UnstickFromGround();
+        }
+        
+        // If player is pressing movement but not moving while on ground, might be stuck
+        if (touchingDirections.IsGrounded && moveInput.x != 0 && rb.linearVelocity.x == 0 && CanMove)
+        {
+            // Player is trying to move but velocity is zero - might be stuck
+            UnstickFromGround();
+        }
+        
+        // If dash is over but we're still on a wall, don't try to apply horizontal input
+        if (!isDashing && touchingDirections.IsOnWall)
+        {
+            if ((touchingDirections.IsOnRightWall && moveInput.x > 0) ||
+                (touchingDirections.IsOnLeftWall && moveInput.x < 0))
+            {
+                // Zero out the horizontal input to prevent sticking
+                moveInput.x = 0;
+            }
+        }
     }
 
     // Update OnMove to ensure facing direction is properly set after dash
@@ -296,14 +356,27 @@ public class PlayerController : MonoBehaviour
         if (touchingDirections.IsOnWall)
         {
             // More powerful push to unstick
-            float pushDirection = touchingDirections.IsOnRightWall ? -2f : 2f;
-            rb.linearVelocity = new Vector2(pushDirection, 1f);
+            float pushDirection = touchingDirections.IsOnRightWall ? -3f : 3f;
+            rb.linearVelocity = new Vector2(pushDirection, 2f); // Stronger upward + horizontal movement
+            
+            // Force canMove to true
+            animator.SetBool(AnimationStrings.canMove, true);
+            
+            // Reset moveInput to prevent getting stuck
+            moveInput = Vector2.zero;
         }
         
         // Re-enable movement immediately if we hit a wall
         if (hitWall)
         {
             animator.SetBool(AnimationStrings.canMove, true);
+            
+            // Add this: Ensure we don't have horizontal input that would get us stuck
+            if ((touchingDirections.IsOnRightWall && moveInput.x > 0) ||
+                (touchingDirections.IsOnLeftWall && moveInput.x < 0))
+            {
+                moveInput.x = 0;
+            }
         }
         else
         {
@@ -326,10 +399,26 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started && touchingDirections.IsGrounded && CanMove)
+        if (context.started)
         {
-            animator.SetTrigger(AnimationStrings.jump);
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpImpulse);
+            if (touchingDirections.IsGrounded && CanMove)
+            {
+                // Normal jump
+                animator.SetTrigger(AnimationStrings.jump);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpImpulse);
+            }
+            else if (touchingDirections.IsOnWall)
+            {
+                // Wall jump with strong push away
+                animator.SetTrigger(AnimationStrings.jump);
+                
+                // Push away from wall with enhanced force
+                float pushDirection = touchingDirections.IsOnRightWall ? -5f : 5f;
+                rb.linearVelocity = new Vector2(pushDirection, jumpImpulse * 0.8f);
+                
+                // Force canMove to true to ensure movement works after wall jump
+                animator.SetBool(AnimationStrings.canMove, true);
+            }
         }
     }
 
@@ -365,6 +454,52 @@ public class PlayerController : MonoBehaviour
         get
         {
             return animator.GetBool(AnimationStrings.isAlive);
+        }
+    }
+    
+    // Add this method to help unstick from walls
+    private void UnstickFromWall()
+    {
+        if (touchingDirections.IsOnWall)
+        {
+            // Apply strong impulse away from wall with upward motion
+            float pushDirection = touchingDirections.IsOnRightWall ? -3f : 3f;
+            rb.linearVelocity = new Vector2(pushDirection, 2f);
+            
+            // Reset horizontal input to prevent re-sticking
+            moveInput.x = 0;
+            
+            // Ensure we can move
+            animator.SetBool(AnimationStrings.canMove, true);
+        }
+    }
+
+    // Add this method to help unstick from the ground
+    private void UnstickFromGround()
+    {
+        if (touchingDirections.IsGrounded && !isDashing)
+        {
+            // Apply tiny upward force to break ground physics sticking
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0.1f);
+            
+            // Force canMove to true
+            animator.SetBool(AnimationStrings.canMove, true);
+        }
+    }
+    
+    // Add this method to ensure we can move shortly after landing
+    private IEnumerator EnsureMovementAfterLanding()
+    {
+        // Wait a tiny frame
+        yield return null;
+        
+        // Force canMove true
+        animator.SetBool(AnimationStrings.canMove, true);
+        
+        // Apply tiny upward force
+        if (touchingDirections.IsGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0.1f);
         }
     }
 }

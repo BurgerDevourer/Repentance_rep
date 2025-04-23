@@ -276,6 +276,10 @@ MonoBehaviour:
   walkSpeed: 3
   walkStopRate: 0.05
   attackZone: {fileID: 7133881785189091924}
+  ledgeCheckDistance: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
   _hasTarget: 0
 --- !u!114 &460333197869064834
 MonoBehaviour:
