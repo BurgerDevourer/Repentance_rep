@@ -446,4 +446,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed88dcbc128c2243b55080c6efa1934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedColliders: []
+  detectedColliders:
+  - {fileID: 0}

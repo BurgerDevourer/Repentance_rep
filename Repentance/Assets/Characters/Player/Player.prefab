@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: 0}
+  m_Actions: {fileID: -944628639613478452, guid: 946fbcbecdea3fa4a97997c3c5484048, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
@@ -403,8 +403,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4118307339221037953}
   - component: {fileID: 8165161488816827981}
+  - component: {fileID: 8741406107066378140}
   m_Layer: 7
-  m_Name: attackhitbox
+  m_Name: PlayerAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +433,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7112664676752622158}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -471,9 +472,27 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
+    - - {x: 0.8151524, y: 0.84944344}
+      - {x: 0.47684002, y: 1.0638971}
+      - {x: 0.027088642, y: 1.1354432}
+      - {x: -0.4869728, y: 0.950192}
+      - {x: 0.18099785, y: 0.08259559}
+      - {x: -0.4905501, y: -0.74744034}
+      - {x: -0.07310051, y: -0.80901706}
+      - {x: 0.614874, y: -0.727751}
+      - {x: 1.0651722, y: -0.06881523}
+      - {x: 0.9916892, y: 0.4444601}
   m_UseDelaunayMesh: 0
+--- !u!114 &8741406107066378140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7112664676752622158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fe0f9b0b5c0da84c83ff6e8be8659a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 10
