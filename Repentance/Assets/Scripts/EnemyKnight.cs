@@ -109,10 +109,13 @@ public class Knight : MonoBehaviour
 
     private bool IsGroundAhead()
     {
+        // Increase the offset for more stable detection
+        float forwardOffset = 0.75f; // Increased from 0.5f
+        
         // Calculate the position to check from (at the knight's feet)
         Vector2 rayStart = new Vector2(
-            transform.position.x + (WalkDirectionVector.x * 0.5f), // Start slightly ahead
-            transform.position.y - GetComponent<Collider2D>().bounds.extents.y + 0.1f); // From the bottom of collider
+            transform.position.x + (WalkDirectionVector.x * forwardOffset), 
+            transform.position.y - GetComponent<Collider2D>().bounds.extents.y + 0.1f);
         
         // Cast a ray downward from ahead of the knight
         RaycastHit2D hit = Physics2D.Raycast(
@@ -121,10 +124,23 @@ public class Knight : MonoBehaviour
             ledgeCheckDistance, 
             groundLayer);
         
-        // Visualize the ray in the Scene view
-        Debug.DrawRay(rayStart, Vector2.down * ledgeCheckDistance, hit ? Color.green : Color.red);
+        // Add a second ray slightly closer for better accuracy
+        Vector2 rayStart2 = new Vector2(
+            transform.position.x + (WalkDirectionVector.x * (forwardOffset * 0.5f)),
+            transform.position.y - GetComponent<Collider2D>().bounds.extents.y + 0.1f);
         
-        return hit.collider != null;
+        RaycastHit2D hit2 = Physics2D.Raycast(
+            rayStart2, 
+            Vector2.down, 
+            ledgeCheckDistance, 
+            groundLayer);
+        
+        // Visualize both rays
+        Debug.DrawRay(rayStart, Vector2.down * ledgeCheckDistance, hit ? Color.green : Color.red);
+        Debug.DrawRay(rayStart2, Vector2.down * ledgeCheckDistance, hit2 ? Color.green : Color.red);
+        
+        // Only flip if both rays hit nothing
+        return hit.collider != null || hit2.collider != null;
     }
 
     private void FlipDirection()

@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 7618710730122413811}
   - component: {fileID: 1172964650744595547}
   - component: {fileID: 3205126586173713924}
+  - component: {fileID: 5518679259526409103}
   m_Layer: 8
   m_Name: Giant_Prefab
   m_TagString: Untagged
@@ -303,7 +304,7 @@ Animator:
   m_GameObject: {fileID: 5108905140474624130}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a25a2fa8a36910649908f47f24f8f22b, type: 2}
+  m_Controller: {fileID: 9100000, guid: b2957bf11868d5944b2c0c9421932c74, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -315,3 +316,40 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!70 &5518679259526409103
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5108905140474624130}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.479393, y: -0.09736395}
+  m_Size: {x: 4.898056, y: 6.0190334}
+  m_Direction: 0

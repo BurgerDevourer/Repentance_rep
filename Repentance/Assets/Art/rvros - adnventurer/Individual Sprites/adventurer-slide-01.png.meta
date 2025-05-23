@@ -116,13 +116,13 @@ TextureImporter:
       name: adventurer-slide-01_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 0
-        width: 36
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+        x: 5
+        y: 1
+        width: 34
+        height: 15
+      alignment: 9
+      pivot: {x: 0.5, y: 1.1}
+      border: {x: 0, y: 1, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 04df6f0394811e940b85dff26e4138df
     internalID: 0
     vertices: []
     indices: 
