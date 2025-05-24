@@ -10,7 +10,6 @@ public class EnemyAI : MonoBehaviour
     
     [Header("Wander Behavior")]
     public float directionChangeTime = 3f;  // Time between random direction changes when idle
-    private float lastDirectionChangeTime = 0f;
     private float flipCooldown = 0.5f; // Cooldown to prevent rapid flipping at ledges/walls
     private float lastFlipTime = 0f;
 
@@ -77,7 +76,7 @@ public class EnemyAI : MonoBehaviour
                 int groundLayer = LayerMask.NameToLayer("Ground");
                 
                 // This ignores collisions between ONLY these two specific objects
-                foreach (Collider2D groundCollider in GameObject.FindObjectsOfType<Collider2D>())
+                foreach (Collider2D groundCollider in Object.FindObjectsByType<Collider2D>(FindObjectsSortMode.None))
                 {
                     if (groundCollider.gameObject.layer == groundLayer)
                     {
@@ -382,7 +381,7 @@ public class EnemyAI : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log($"[{gameObject.name}] OnTriggerEnter2D with {collision.name} on layer {LayerMask.LayerToName(collision.gameObject.layer)}. " +
-                  $"Is on detection layer: {((1 << collision.gameObject.layer) & detectionLayer) != 0}");
+              $"Is on detection layer: {((1 << collision.gameObject.layer) & detectionZone.detectionLayer) != 0}");
         
         // Rest of your existing OnTriggerEnter2D code...
     }
