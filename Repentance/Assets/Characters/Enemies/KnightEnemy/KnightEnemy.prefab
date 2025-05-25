@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2286545528220297289}
   - component: {fileID: 1024387005903533710}
-  m_Layer: 8
+  - component: {fileID: 2372806354238979946}
+  m_Layer: 10
   m_Name: Detectionzone
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,7 +63,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -78,6 +79,26 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 15, y: 5}
   m_EdgeRadius: 0
+--- !u!114 &2372806354238979946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2843937162243851337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed88dcbc128c2243b55080c6efa1934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectedColliders: []
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  detectThroughWalls: 1
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6058098569655174496
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +111,7 @@ GameObject:
   - component: {fileID: 6029357461814100029}
   - component: {fileID: 8578893746394011886}
   m_Layer: 10
-  m_Name: SwordAttack
+  m_Name: AttackHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,10 +180,15 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 2.8192286, y: 0.71164703}
       - {x: 2.1000001, y: 1.2}
-      - {x: 0.7489435, y: 1.109017}
-      - {x: 0.89964694, y: 0.84095967}
-      - {x: 0.20631647, y: -0.2265718}
-      - {x: 1.2240628, y: -0.17574495}
+      - {x: 1.3306565, y: 0.96038175}
+      - {x: 0.81641054, y: 0.80216074}
+      - {x: 0.13738698, y: 0.6722399}
+      - {x: 0.03917855, y: 0.5950225}
+      - {x: -0.2908635, y: 0.34428346}
+      - {x: -0.24449968, y: -0.08820236}
+      - {x: -0.3075633, y: -0.41689765}
+      - {x: -0.070153356, y: -0.3660707}
+      - {x: -0.27139568, y: -0.94650793}
       - {x: 0.19823551, y: -1.2100244}
       - {x: 2.9877853, y: -1.309017}
       - {x: 3.1771207, y: -0.58784354}
@@ -181,6 +207,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 10
+  knockbackForce: 5
+  enableKnockback: 1
+  attackCooldown: 0.3
+  showHitEffect: 1
+  hitEffectPrefab: {fileID: 0}
+  debugMode: 1
 --- !u!1 &7269329383182624943
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +231,7 @@ GameObject:
   - component: {fileID: 3922944207773721105}
   m_Layer: 8
   m_Name: KnightEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,9 +332,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &6772026689195176006
 CapsuleCollider2D:
@@ -411,10 +443,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de66766b0a2eb1c40b1603b98e74e170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 0
-  _health: 100
+  _maxHealth: 50
+  _health: 50
   _isAlive: 1
   invincibilityTime: 0.25
+  hurtStateTime: 0.2
 --- !u!114 &3922944207773721105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,19 +462,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   chaseSpeed: 4.5
-  walkStopRate: 0.05
-  leftPatrolPoint: {fileID: 0}
-  rightPatrolPoint: {fileID: 0}
-  patrolPointStopTime: 1.5
-  detectionZone: {fileID: 7133881785189091924}
+  directionChangeTime: 3
+  detectionZone: {fileID: 2372806354238979946}
   attackZone: {fileID: 7133881785189091924}
-  maxChaseDistance: 10
   losePlayerDistance: 15
   attackCooldown: 1.5
   ledgeCheckDistance: 0.5
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  minDistanceFromPlayer: 1.2
+  backupSpeed: 1.5
+  attackComponent: {fileID: 0}
 --- !u!1 &8721924295921636551
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,8 +565,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bed88dcbc128c2243b55080c6efa1934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedColliders:
-  - {fileID: 0}
+  detectedColliders: []
   detectionLayer:
     serializedVersion: 2
     m_Bits: 128
+  detectThroughWalls: 1
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 64
