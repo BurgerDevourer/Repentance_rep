@@ -17,6 +17,11 @@ public class DetectionZone : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // IMPORTANT: Add this line to see all trigger events regardless of layer
+        Debug.Log($"[{gameObject.name}] OnTriggerEnter2D with {collision.name} " +
+                  $"on layer {LayerMask.LayerToName(collision.gameObject.layer)}. " +
+                  $"Is on detection layer: {((1 << collision.gameObject.layer) & detectionLayer) != 0}");
+        
         // Check if the object is on a detection layer
         if (((1 << collision.gameObject.layer) & detectionLayer) != 0)
         {

@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
-
     Animator animator;
     [SerializeField]
     private int _maxHealth;
-    public int MaxHealth 
+    public int MaxHealth
     {
         get
         {
@@ -24,14 +23,15 @@ public class Damageable : MonoBehaviour
 
     public int Health
     {
-        get{
+        get
+        {
             return _health;
         }
         set
         {
             _health = value;
 
-            if(_health <= 0)
+            if (_health <= 0)
             {
                 IsAlive = false;
             }
@@ -44,18 +44,21 @@ public class Damageable : MonoBehaviour
     private float timeSinceHit = 0;
     public float invincibilityTime = 0.25f;
 
-    public bool IsAlive 
-    { 
+    private bool isHit = false;
+    [SerializeField] private float hurtStateTime = 0.2f; // How long the hurt state stays active
+
+    public bool IsAlive
+    {
         get
         {
             return _isAlive;
         }
         set
         {
-           _isAlive = value;
+            _isAlive = value;
             animator.SetBool(AnimationStrings.isAlive, value);
         }
-      }
+    }
 
     void Awake()
     {
@@ -64,27 +67,46 @@ public class Damageable : MonoBehaviour
 
     public void Update()
     {
-        if(isInvincible)
+        // Handle invincibility timer
+        if (isInvincible)
         {
-            if(timeSinceHit > invincibilityTime)
+            if (timeSinceHit > invincibilityTime)
             {
                 isInvincible = false;
                 timeSinceHit = 0;
             }
 
-            timeSinceHit +=Time.deltaTime;
+            timeSinceHit += Time.deltaTime;
+        }
+
+        // Handle hurt state timer
+        if (isHit)
+        {
+            if (timeSinceHit > hurtStateTime)
+            {
+                isHit = false;
+                animator.SetBool(AnimationStrings.isHit, false);
+                Debug.Log($"[{gameObject.name}] Hurt state ended");
+            }
         }
     }
 
-    public void Hit(int damage) 
+    public void Hit(int damage)
     {
-        if(IsAlive && !isInvincible)
+        if (IsAlive && !isInvincible)
         {
             Health -= damage;
             isInvincible = true;
+            timeSinceHit = 0;
 
-            animator.SetTrigger(AnimationStrings.hurt);
+            // Set hurt state
+
+            if (Health > 0)
+            {
+                isHit = true;
+                animator.SetBool(AnimationStrings.isHit, true);
+                Debug.Log($"[{gameObject.name}] Hit! Health: {Health}, Damage: {damage}");
+            }
         }
     }
-
 }

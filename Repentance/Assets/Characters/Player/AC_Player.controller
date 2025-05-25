@@ -461,7 +461,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isHurt
+    m_ConditionEvent: isHit
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3882628139701702898}
@@ -655,7 +655,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isHurt
+  - m_Name: isHit
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -755,6 +755,7 @@ AnimatorState:
   m_Transitions: []
   m_StateMachineBehaviours:
   - {fileID: -1775536955496084910}
+  - {fileID: 2105226860590891683}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -819,6 +820,19 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &2105226860590891683
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47706866f3fc7eb45b437ac205f2d954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeTime: 1
 --- !u!1109 &2284412202276800218
 AnimatorTransition:
   m_ObjectHideFlags: 1

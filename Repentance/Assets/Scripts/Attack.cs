@@ -36,7 +36,6 @@ public class Attack : MonoBehaviour
         if (!attackCollider.isTrigger)
         {
             attackCollider.isTrigger = true;
-            Debug.Log("Attack collider set to trigger mode");
         }
         
         // Initially disable the attack collider
@@ -59,19 +58,13 @@ public class Attack : MonoBehaviour
         
         // Enable attack hitbox
         attackCollider.enabled = true;
-        
-        if (debugMode)
-            Debug.Log($"[{gameObject.name}] Attack collider enabled. Position: {transform.position}, " +
-                     $"Parent: {transform.parent?.name}, Collider enabled: {attackCollider.enabled}");
+    
         
         // Keep attack active for duration
         yield return new WaitForSeconds(duration);
         
         // Disable attack hitbox
         attackCollider.enabled = false;
-        
-        if (debugMode)
-            Debug.Log($"[{gameObject.name}] Attack finished. Hit targets: {hitTargets.Count}");
         
         // Apply cooldown
         yield return new WaitForSeconds(attackCooldown);
@@ -81,20 +74,8 @@ public class Attack : MonoBehaviour
     // Modify trigger enter
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (debugMode)
-            Debug.Log($"[{gameObject.name}] Trigger detected with: {collision.name} on layer {LayerMask.LayerToName(collision.gameObject.layer)}");
-            
-        // REMOVE THE collision.isTrigger CHECK - this is the key fix!
-        // Only ignore parent objects and already hit targets
-        if ((attacker != null && collision.transform.IsChildOf(attacker)) ||
-            hitTargets.Contains(collision.gameObject))
-        {
-            if (debugMode)
-                Debug.Log($"[{gameObject.name}] Ignoring collision: " +
-                         $"isChild={attacker != null && collision.transform.IsChildOf(attacker)}, " +
-                         $"alreadyHit={hitTargets.Contains(collision.gameObject)}");
-            return;
-        }
+        // Prevent hitting the same target multiple times in one attack
+        if (hitTargets.Contains(collision.gameObject)) return;
         
         // Add to hit targets to prevent multiple hits
         hitTargets.Add(collision.gameObject);
@@ -108,8 +89,11 @@ public class Attack : MonoBehaviour
             
         if (damageable != null)
         {
-            Debug.Log($"[{gameObject.name}] HIT SUCCESS! Damaging {collision.name} for {attackDamage}");
+            // CRITICAL: Actually apply damage!
             damageable.Hit(attackDamage);
+            
+            if (debugMode)
+                Debug.Log($"[{gameObject.name}] Hit {collision.name} for {attackDamage} damage!");
             
             // Apply knockback if enabled
             if (enableKnockback)
@@ -123,9 +107,9 @@ public class Attack : MonoBehaviour
                 ShowHitEffect(collision.bounds.center);
             }
         }
-        else
+        else if (debugMode)
         {
-            Debug.LogWarning($"[{gameObject.name}] No Damageable component found on {collision.name} or its parents");
+            Debug.Log($"[{gameObject.name}] Collision with {collision.name} has no Damageable component!");
         }
     }
     

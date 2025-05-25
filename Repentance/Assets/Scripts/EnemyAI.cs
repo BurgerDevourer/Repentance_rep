@@ -10,7 +10,6 @@ public class EnemyAI : MonoBehaviour
     
     [Header("Wander Behavior")]
     public float directionChangeTime = 3f;  // Time between random direction changes when idle
-    private float lastDirectionChangeTime = 0f;
     private float flipCooldown = 0.5f; // Cooldown to prevent rapid flipping at ledges/walls
     private float lastFlipTime = 0f;
 
@@ -26,6 +25,10 @@ public class EnemyAI : MonoBehaviour
     [Header("Ledge Detection")]
     [SerializeField] private float ledgeCheckDistance = 0.6f;
     [SerializeField] private LayerMask groundLayer;
+
+    [Header("Chase Behavior")]
+    public float minDistanceFromPlayer = 1.2f; // Distance to maintain from player
+    public float backupSpeed = 1.5f;           // Speed to move away if too close
 
     // Components
     private Rigidbody2D rb;
@@ -45,6 +48,9 @@ public class EnemyAI : MonoBehaviour
     public bool IsPlayerInAttackRange => attackZone != null && attackZone.detectedColliders.Count > 0 && playerTransform != null && attackZone.detectedColliders.Contains(playerTransform.GetComponent<Collider2D>());
 
     private bool CanMove => animator != null && animator.GetBool(AnimationStrings.canMove);
+
+    // Add this at the class level with other private variables
+    private bool isAttacking = false; 
 
     private void Awake()
     {
@@ -77,7 +83,7 @@ public class EnemyAI : MonoBehaviour
                 int groundLayer = LayerMask.NameToLayer("Ground");
                 
                 // This ignores collisions between ONLY these two specific objects
-                foreach (Collider2D groundCollider in GameObject.FindObjectsOfType<Collider2D>())
+                foreach (Collider2D groundCollider in GameObject.FindObjectsByType<Collider2D>(FindObjectsSortMode.None))
                 {
                     if (groundCollider.gameObject.layer == groundLayer)
                     {
@@ -95,7 +101,6 @@ public class EnemyAI : MonoBehaviour
             if (playerLayer >= 0)
             {
                 detectionZone.detectionLayer |= (1 << playerLayer);
-                Debug.Log($"[{gameObject.name}] FORCED detection zone to detect Player layer");
             }
         }
     }
@@ -108,28 +113,27 @@ public class EnemyAI : MonoBehaviour
 
     private void HandleDetectionAndState()
     {
-        bool playerInDetectionZone = detectionZone != null && 
-                                     detectionZone.detectedColliders.Count > 0 && 
-                                     playerTransform != null && 
-                                     detectionZone.detectedColliders.Contains(playerTransform.GetComponent<Collider2D>());
-
-        // More detailed debug - log every 30 frames instead of 60
-        if (Time.frameCount % 30 == 0)
+        // Don't change states if we're in the middle of an attack
+        if (isAttacking)
+            return;
+        
+        // Add this direct detection backup
+        bool directPlayerDetection = playerTransform != null && 
+                            Vector2.Distance(transform.position, playerTransform.position) < 3f;
+    
+        bool playerInDetectionZone = (detectionZone != null && 
+                                 detectionZone.detectedColliders.Count > 0 && 
+                                 playerTransform != null && 
+                                 detectionZone.detectedColliders.Contains(playerTransform.GetComponent<Collider2D>())) ||
+                                 directPlayerDetection;  // Fallback direct detection
+    
+        // Every second, log detection state for debugging
+        if (Time.frameCount % 60 == 0)
         {
-            Debug.Log($"[{gameObject.name}] Detection: {playerInDetectionZone}, Attack: {IsPlayerInAttackRange}, " +
-                      $"State: {currentState}, Player Transform: {playerTransform != null}, " +
-                      $"Detection Zone: {detectionZone != null}, Attack Zone: {attackZone != null}, " +
-                      $"Colliders in detection: {(detectionZone != null ? detectionZone.detectedColliders.Count : 0)}, " +
-                      $"Player Collider: {(playerTransform != null ? playerTransform.GetComponent<Collider2D>() != null : false)}");
-            
-            // Print the detected colliders for debugging
-            if (detectionZone != null && detectionZone.detectedColliders.Count > 0) 
-            {
-                foreach (var col in detectionZone.detectedColliders)
-                {
-                    Debug.Log($"[{gameObject.name}] Detected: {col.name} on layer {LayerMask.LayerToName(col.gameObject.layer)}");
-                }
-            }
+            Debug.Log($"[{gameObject.name}] State: {currentState}, " +
+                      $"Player detected: {playerInDetectionZone}, " +
+                      $"Attack range: {IsPlayerInAttackRange}, " +
+                      $"Can attack: {canAttack}");
         }
         
         switch (currentState)
@@ -139,6 +143,7 @@ public class EnemyAI : MonoBehaviour
                 {
                     currentState = EnemyState.Chase;
                     HasTarget = true;
+                    Debug.Log($"[{gameObject.name}] Detected player - switching to Chase!");
                 }
                 break;
 
@@ -156,7 +161,8 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case EnemyState.Attack:
-                // AttackRoutine handles transition back to Chase
+                // Don't make any state transitions here
+                // Let AttackRoutine handle returning to Chase state when done
                 break;
         }
     }
@@ -220,15 +226,15 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
+        // Calculate direction and distance to player
         float directionToPlayer = playerTransform.position.x - transform.position.x;
+        float distanceToPlayer = Mathf.Abs(directionToPlayer);
 
-        if (Mathf.Abs(directionToPlayer) > 0.1f)
-        {
-            if (directionToPlayer > 0 && !movingRight) FlipDirection();
-            else if (directionToPlayer < 0 && movingRight) FlipDirection();
-        }
+        // Always face the player
+        if (directionToPlayer > 0 && !movingRight) FlipDirection();
+        else if (directionToPlayer < 0 && movingRight) FlipDirection();
 
-        // MODIFIED: Only check for walls, not ground ahead, when chasing directly toward player
+        // Wall detection check
         if (touchingDirections.IsOnWall && 
             ((movingRight && directionToPlayer > 0) || (!movingRight && directionToPlayer < 0)))
         {
@@ -236,7 +242,7 @@ public class EnemyAI : MonoBehaviour
             return;
         }
         
-        // ADDED: Special ledge check that explicitly ignores the player
+        // Ledge detection check
         bool ledgeAhead = IsLedgeAheadIgnoringPlayer();
         if (ledgeAhead && 
             ((movingRight && directionToPlayer > 0) || (!movingRight && directionToPlayer < 0)))
@@ -245,8 +251,27 @@ public class EnemyAI : MonoBehaviour
             return;
         }
         
-        // Move toward player
-        rb.linearVelocity = new Vector2(moveDirection.x * chaseSpeed, rb.linearVelocity.y);
+        // NEW: Distance management logic
+        if (distanceToPlayer < minDistanceFromPlayer)
+        {
+            // Too close to player - stop or back up slightly
+            if (distanceToPlayer < minDistanceFromPlayer * 0.8f)
+            {
+                // Back up slightly when way too close
+                float backupDirection = -Mathf.Sign(directionToPlayer);
+                rb.linearVelocity = new Vector2(backupDirection * backupSpeed, rb.linearVelocity.y);
+            }
+            else
+            {
+                // Just stop when at good distance
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            }
+        }
+        else
+        {
+            // Not close enough - move toward player
+            rb.linearVelocity = new Vector2(moveDirection.x * chaseSpeed, rb.linearVelocity.y);
+        }
     }
 
     // New method specifically for chase behavior
@@ -271,11 +296,17 @@ public class EnemyAI : MonoBehaviour
         Debug.Log($"[{gameObject.name}] Starting attack routine");
         
         canAttack = false;
+        isAttacking = true; // Set the flag to true when attack starts
         animator.SetBool(AnimationStrings.canMove, false);
         rb.linearVelocity = Vector2.zero;
 
+        // Store original RigidBody type to restore it later
+        RigidbodyType2D originalType = rb.bodyType;
+        rb.bodyType = RigidbodyType2D.Kinematic; // Prevent any physics from moving the enemy
+
         if (playerTransform != null)
         {
+            // Face the player before attacking (only change direction, not position)
             bool playerIsToTheRight = playerTransform.position.x > transform.position.x;
             if (playerIsToTheRight != movingRight)
             {
@@ -283,17 +314,13 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
+        // Trigger attack animation
         animator.SetTrigger(AnimationStrings.attack);
         
         // Execute the attack
         if (attackComponent != null)
         {
-            Debug.Log($"[{gameObject.name}] Executing attack via AttackComponent");
             attackComponent.ExecuteAttack(0.3f); // Increased attack duration to 0.3 seconds
-        }
-        else
-        {
-            Debug.LogError($"[{gameObject.name}] Attack component is null!");
         }
 
         float attackAnimLength = 0.5f;
@@ -304,6 +331,10 @@ public class EnemyAI : MonoBehaviour
         }
         yield return new WaitForSeconds(attackAnimLength);
 
+        // Restore original RigidBody type
+        rb.bodyType = originalType;
+        
+        isAttacking = false; // Reset the flag when attack is complete
         animator.SetBool(AnimationStrings.canMove, true);
         currentState = EnemyState.Chase;
 
@@ -350,40 +381,5 @@ public class EnemyAI : MonoBehaviour
             currentState = EnemyState.Chase;
             HasTarget = true;
         }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (detectionZone != null)
-        {
-            Gizmos.color = Color.yellow;
-            CircleCollider2D detCollider = detectionZone.GetComponent<CircleCollider2D>();
-            if (detCollider != null) Gizmos.DrawWireSphere(detectionZone.transform.position + (Vector3)detCollider.offset, detCollider.radius);
-        }
-        
-        if (attackZone != null)
-        {
-            Gizmos.color = Color.red;
-            CircleCollider2D atkCollider = attackZone.GetComponent<CircleCollider2D>();
-            if (atkCollider != null) Gizmos.DrawWireSphere(attackZone.transform.position + (Vector3)atkCollider.offset, atkCollider.radius);
-        }
-        
-        // Ledge check Gizmo
-        if (Application.isPlaying && rb != null && GetComponent<Collider2D>() != null)
-        {
-            Vector2 raycastOrigin = (Vector2)transform.position +
-                                new Vector2(GetComponent<Collider2D>().offset.x + (moveDirection.x * (GetComponent<Collider2D>().bounds.extents.x + 0.3f)),
-                                            GetComponent<Collider2D>().offset.y - GetComponent<Collider2D>().bounds.extents.y + 0.05f);
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawLine(raycastOrigin, raycastOrigin + Vector2.down * ledgeCheckDistance);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log($"[{gameObject.name}] OnTriggerEnter2D with {collision.name} on layer {LayerMask.LayerToName(collision.gameObject.layer)}. " +
-                  $"Is on detection layer: {((1 << collision.gameObject.layer) & detectionLayer) != 0}");
-        
-        // Rest of your existing OnTriggerEnter2D code...
     }
 }
