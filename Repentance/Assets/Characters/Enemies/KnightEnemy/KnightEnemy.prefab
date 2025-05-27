@@ -109,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8279175191218502097}
   - component: {fileID: 6029357461814100029}
-  - component: {fileID: 8578893746394011886}
+  - component: {fileID: 5169441972299782195}
   m_Layer: 10
   m_Name: AttackHitbox
   m_TagString: Untagged
@@ -194,7 +194,7 @@ PolygonCollider2D:
       - {x: 3.1771207, y: -0.58784354}
       - {x: 3.1510565, y: 0.00901711}
   m_UseDelaunayMesh: 0
---- !u!114 &8578893746394011886
+--- !u!114 &5169441972299782195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6058098569655174496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fe0f9b0b5c0da84c83ff6e8be8659a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 437d412721e27104491add4dbe19c2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 10
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 50
-  _health: 50
+  _health: 20
   _isAlive: 1
   invincibilityTime: 0.25
   hurtStateTime: 0.2
@@ -541,7 +541,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5, y: -0.100000024}
+  m_Offset: {x: -0.09759486, y: -0.100000024}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -551,7 +551,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.4, y: 2}
+  m_Size: {x: 2.2048104, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &7133881785189091924
 MonoBehaviour:
