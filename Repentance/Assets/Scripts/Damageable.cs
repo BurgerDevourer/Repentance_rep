@@ -65,6 +65,10 @@ public class Damageable : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    //Deathscreen
+    [SerializeField]
+    private GameObject deathScreen;
+
     public void Update()
     {
         // Handle invincibility timer
@@ -88,6 +92,11 @@ public class Damageable : MonoBehaviour
                 animator.SetBool(AnimationStrings.isHit, false);
                 Debug.Log($"[{gameObject.name}] Hurt state ended");
             }
+        }
+
+        if (!IsAlive && deathScreen != null)
+        {
+            deathScreen.SetActive(true);
         }
     }
 

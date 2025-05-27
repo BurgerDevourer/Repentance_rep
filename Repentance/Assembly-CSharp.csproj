@@ -64,14 +64,15 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.31f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\FollowPlayer.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\PauseGame.cs" />
+    <Compile Include="Assets\Scripts\StartGame.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Attack.cs" />
-    <Compile Include="Assets\Scripts\EnemyKnight.cs" />
     <Compile Include="Assets\Scripts\FadeRemove.cs" />
     <Compile Include="Assets\Scripts\TouchingDirections.cs" />
     <Compile Include="Assets\Scripts\Damageable.cs" />
+    <Compile Include="Assets\Scripts\CenterOfCamera.cs" />
     <Compile Include="Assets\Scripts\StateMachine\SettBoolBehaviour.cs" />
     <Compile Include="Assets\Scripts\AnimationStrings.cs" />
     <Compile Include="Assets\Scripts\DetectionZone.cs" />
