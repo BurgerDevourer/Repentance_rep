@@ -446,8 +446,9 @@ MonoBehaviour:
   _maxHealth: 50
   _health: 20
   _isAlive: 1
-  invincibilityTime: 0.25
-  hurtStateTime: 0.2
+  invincibilityTime: 0.1
+  hurtStateTime: 0.1
+  deathScreen: {fileID: 0}
 --- !u!114 &3922944207773721105
 MonoBehaviour:
   m_ObjectHideFlags: 0

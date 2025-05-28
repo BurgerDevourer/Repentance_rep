@@ -133,12 +133,12 @@ AnimatorStateMachine:
   - {fileID: 825955368084059737}
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: 987050648142249631}
-    second:
-    - {fileID: 4972492808287049383}
   - first: {fileID: 1006741874713756640}
     second:
     - {fileID: 3481551660130638398}
+  - first: {fileID: 987050648142249631}
+    second:
+    - {fileID: 4972492808287049383}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 570, y: 90, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
@@ -380,7 +380,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Knight_attack
-  m_Speed: 0.5
+  m_Speed: 0.4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8094620990015498346}
