@@ -41,34 +41,37 @@ public class Attack : MonoBehaviour
         // Initially disable the attack collider
         attackCollider.enabled = false;
     }
-    
+
     // Call this method to activate the attack
     public void ExecuteAttack(float duration = 0.2f)
     {
         if (!canAttack) return;
-        
+
         StartCoroutine(AttackRoutine(duration));
+        
     }
-    
+
     // Modify the attack routine
     private IEnumerator AttackRoutine(float duration)
     {
         canAttack = false;
         hitTargets.Clear();
-        
+
         // Enable attack hitbox
         attackCollider.enabled = true;
-    
-        
+        AudioManager.Instance.PlayAttackSound();
+
+
         // Keep attack active for duration
         yield return new WaitForSeconds(duration);
-        
+
         // Disable attack hitbox
         attackCollider.enabled = false;
-        
+
         // Apply cooldown
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
+        
     }
 
     // Modify trigger enter
@@ -82,6 +85,7 @@ public class Attack : MonoBehaviour
         
         // Try to apply damage
         Damageable damageable = collision.GetComponent<Damageable>();
+        
         
         // CRITICAL: Also try getting Damageable from parent if not found
         if (damageable == null)

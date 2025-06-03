@@ -107,6 +107,7 @@ public class Damageable : MonoBehaviour
             Health -= damage;
             isInvincible = true;
             timeSinceHit = 0;
+            AudioManager.Instance.PlayHitSound();
 
             // Set hurt state
 
